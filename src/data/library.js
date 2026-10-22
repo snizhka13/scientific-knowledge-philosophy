@@ -137,7 +137,8 @@ const cache = new Map();
 export function loadChapter(id, n) {
   const key = `${id}/${n}`;
   if (!cache.has(key)) {
-    const url = `./books/${id}/${String(n).padStart(2, "0")}.json`;
+    // ?v= змінюється з кожною збіркою, щоб браузер не показував старий текст після оновлення
+    const url = `./books/${id}/${String(n).padStart(2, "0")}.json?v=${__BUILD_ID__}`;
     cache.set(
       key,
       fetch(url).then((r) => {
