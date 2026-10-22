@@ -1,0 +1,122 @@
+/* Переглядач презентацій */
+.deck {
+  position: fixed; inset: 0; z-index: 20; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; grid-template-columns: minmax(0, 1fr);
+  background: #141312; color: #f4f1ec; overscroll-behavior: none;
+}
+.deck-bar, .deck-nav { display: flex; align-items: center; gap: 12px; padding: 12px clamp(12px, 2vw, 24px); }
+.deck-bar__title { flex: 1 1 auto; min-width: 0; display: grid; gap: 3px; }
+.deck-bar__title span { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #a9845a; }
+.deck-bar__title strong { font: 500 15px/1.2 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.deck-bar__right { display: flex; gap: 4px; flex: none; }
+.deck-icon {
+  position: relative; display: grid; place-items: center; flex: none; width: 42px; height: 42px; border-radius: 50%;
+  border: 0; background: transparent; color: inherit; cursor: pointer; text-decoration: none;
+  transition: background 0.25s var(--ease), opacity 0.25s;
+}
+.deck-icon svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.deck-icon:hover, .deck-icon.is-on { background: rgba(244, 241, 236, 0.1); }
+.deck-icon:disabled { opacity: 0.25; cursor: default; background: transparent; }
+.deck-icon--next:not(:disabled) { background: #f4f1ec; color: #141312; }
+.deck-icon--next:not(:disabled):hover { background: #a9845a; }
+
+
+.deck-wrap { position: relative; min-height: 0; display: grid; place-items: center; padding: 0 clamp(8px, 2vw, 28px); touch-action: pan-y; user-select: none; }
+.deck-stage { width: calc(1600 * var(--u)); height: calc(900 * var(--u)); }
+.deck-stage > .sl { border-radius: calc(10 * var(--u)); box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.9); }
+.is-full .deck-wrap { padding: 0; }
+.is-full .deck-stage > .sl { border-radius: 0; }
+
+.deck-nav { gap: 16px; }
+.deck-progress { position: relative; flex: 1; display: flex; gap: 4px; height: 26px; align-items: center; }
+.deck-progress button {
+  flex: 1; height: 26px; padding: 0; border: 0; background: transparent; cursor: pointer; position: relative; z-index: 1;
+}
+.deck-progress button::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 11px; height: 4px; border-radius: 2px;
+  background: rgba(244, 241, 236, 0.16); transition: background 0.4s var(--ease);
+}
+.deck-progress button.is-done::after { background: #a9845a; }
+.deck-progress button:hover::after { background: rgba(244, 241, 236, 0.45); }
+.deck-progress button.is-done:hover::after { background: #c9a270; }
+.deck-progress i { display: none; }
+.deck-count { flex: none; min-width: 64px; text-align: right; font: 500 15px/1 var(--sans); font-variant-numeric: tabular-nums; }
+.deck-count small { font-size: 13px; color: rgba(244, 241, 236, 0.5); }
+
+/* усі слайди */
+.deck-grid {
+  position: absolute; inset: 66px 0 0; z-index: 4; overflow: auto; padding: 20px clamp(12px, 3vw, 40px) 40px;
+  background: rgba(20, 19, 18, 0.96); backdrop-filter: blur(10px);
+  opacity: 0; visibility: hidden; transition: opacity 0.35s var(--ease), visibility 0.35s;
+}
+.deck-grid.is-open { opacity: 1; visibility: visible; }
+.deck-grid__inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 26px 20px; max-width: 1400px; margin: 0 auto; }
+.deck-thumb { display: grid; gap: 10px; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
+.deck-thumb__frame {
+  --u: 0.1625px; position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px;
+  outline: 2px solid transparent; outline-offset: 3px; transition: outline-color 0.3s, transform 0.4s var(--ease);
+  container-type: inline-size;
+}
+.deck-thumb__frame > .sl { --u: calc(100cqw / 1600); pointer-events: none; }
+.deck-thumb:hover .deck-thumb__frame { transform: translateY(-4px); }
+.deck-thumb.is-current .deck-thumb__frame { outline-color: #a9845a; }
+.deck-thumb__label { font-size: 13px; line-height: 1.35; color: rgba(244, 241, 236, 0.7); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deck-grid.is-open .deck-thumb { animation: deckThumb 0.5s var(--ease) both; }
+.deck-grid.is-open .deck-thumb:nth-child(2) { animation-delay: 0.03s; }
+.deck-grid.is-open .deck-thumb:nth-child(3) { animation-delay: 0.06s; }
+.deck-grid.is-open .deck-thumb:nth-child(4) { animation-delay: 0.09s; }
+.deck-grid.is-open .deck-thumb:nth-child(5) { animation-delay: 0.12s; }
+.deck-grid.is-open .deck-thumb:nth-child(6) { animation-delay: 0.15s; }
+.deck-grid.is-open .deck-thumb:nth-child(7) { animation-delay: 0.18s; }
+.deck-grid.is-open .deck-thumb:nth-child(8) { animation-delay: 0.21s; }
+@keyframes deckThumb { from { opacity: 0; transform: translateY(16px); } }
+
+/* вузький портретний екран: слайд перекомпоновується й гортається вертикально */
+.deck.is-flow .deck-wrap { display: block; padding: 0 10px; overflow: hidden; }
+.deck.is-flow .deck-stage { --u: 0.62px; width: 100%; height: 100%; overflow: auto; border-radius: 12px; -webkit-overflow-scrolling: touch; }
+.deck.is-flow .sl { width: 100%; height: auto; min-height: 100%; border-radius: 12px; }
+.deck.is-flow .sl--content, .deck.is-flow .sl--summary { padding: 18px 18px 22px; grid-template-rows: auto auto auto auto; }
+.deck.is-flow .sl__top { font-size: 10px; }
+.deck.is-flow .sl__top span:first-child { display: none; }
+.deck.is-flow .sl__body { padding-top: 22px; }
+.deck.is-flow .sl__title { font-size: 30px; max-width: none; }
+.deck.is-flow .sl__lead { max-width: none; }
+.deck.is-flow .sl__lead { font-size: 16px; }
+.deck.is-flow .sl-cards, .deck.is-flow .sl-steps, .deck.is-flow .sl-compare, .deck.is-flow .sl-terms { grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+.deck.is-flow .sl-cards h3, .deck.is-flow .sl-steps h3, .deck.is-flow .sl-terms dt { font-size: 17px; }
+.deck.is-flow .sl-cards p, .deck.is-flow .sl-steps p, .deck.is-flow .sl-compare p, .deck.is-flow .sl-terms dd { font-size: 15px; }
+.deck.is-flow .sl-cards__card { padding: 16px; border-radius: 10px; }
+.deck.is-flow .sl-steps::before { left: 14px; right: auto; top: 14px; bottom: 14px; width: 2px; height: auto; }
+.deck.is-flow .sl-steps li { display: grid; grid-template-columns: 30px 1fr; column-gap: 14px; }
+.deck.is-flow .sl-steps__dot { grid-row: span 2; width: 30px; height: 30px; margin: 0; font-size: 13px; box-shadow: 0 0 0 5px #f4f1ec; }
+.deck.is-flow .sl-steps p { margin-top: 4px; }
+.deck.is-flow .sl-compare__col, .deck.is-flow .sl-compare__col + .sl-compare__col { padding: 0; border: 0; }
+.deck.is-flow .sl-compare__col + .sl-compare__col { padding-top: 16px; border-top: 1px solid rgba(23, 22, 20, 0.14); }
+.deck.is-flow .sl-compare h3 { font-size: 24px; }
+.deck.is-flow .sl__quote { grid-template-columns: 1fr; gap: 8px; margin-top: 22px; padding: 4px 0 4px 14px; }
+.deck.is-flow .sl__quote blockquote { font-size: 15px; }
+.deck.is-flow .sl__quote figcaption { max-width: none; text-align: left; font-size: 12px; }
+.deck.is-flow .sl__foot { font-size: 11px; }
+.deck.is-flow .sl--cover { grid-template-columns: 1fr; grid-template-rows: 200px auto; }
+.deck.is-flow .sl-cover__img { grid-row: 1; }
+.deck.is-flow .sl-cover__text { padding: 24px 20px; }
+.deck.is-flow .sl-cover__title { font-size: 32px; }
+.deck.is-flow .sl-cover__plan { margin-top: 28px; }
+.deck.is-flow .sl-cover__plan li { font-size: 15px; }
+.deck.is-flow .sl-sources { grid-template-columns: 1fr; gap: 8px; margin-top: 20px; }
+.deck.is-flow .sl-sources ol { font-size: 12px; }
+.deck.is-flow .deck-bar__title strong { font-size: 13px; }
+.deck.is-flow .deck-icon--full { display: none; }
+@media (max-width: 700px) {
+  .deck-nav { gap: 10px; }
+  .deck-grid__inner { grid-template-columns: 1fr 1fr; gap: 16px 10px; }
+  .deck-grid { inset: 66px 0 0; }
+}
+
+/* версія для PDF: сторінка на слайд */
+html.is-print-deck, html.is-print-deck body { background: #141312; }
+.print-deck { display: grid; gap: 0; }
+@media print {
+  @page { size: 1600px 900px; margin: 0; }
+  html.is-print-deck .grain, html.is-print-deck .cursor, html.is-print-deck .curtain { display: none !important; }
+  .print-deck > .sl { break-after: page; }
+}

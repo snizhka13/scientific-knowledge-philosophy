@@ -1,0 +1,110 @@
+/* Слайди: усі розміри в одиницях --u (1/1600 ширини слайда) */
+.print-deck, .deck-stage { --u: 1px; }
+.sl {
+  --s-bg: #f4f1ec; --s-paper: #fbf9f6; --s-ink: #171614; --s-muted: #6f6a63; --s-line: rgba(23, 22, 20, 0.14); --s-accent: #a9845a;
+  position: relative; width: calc(1600 * var(--u)); height: calc(900 * var(--u)); overflow: hidden;
+  background: var(--s-bg); color: var(--s-ink); font-family: var(--sans);
+}
+.sl--content, .sl--summary {
+  display: grid; grid-template-rows: auto 1fr auto auto;
+  padding: calc(52 * var(--u)) calc(96 * var(--u)) calc(40 * var(--u));
+}
+.sl__top {
+  display: flex; justify-content: space-between; gap: calc(40 * var(--u));
+  padding-bottom: calc(18 * var(--u)); border-bottom: calc(1 * var(--u)) solid var(--s-line);
+  font: 500 calc(15 * var(--u))/1.2 var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--s-muted);
+}
+.sl__top span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sl__top span:last-child { flex: none; font-variant-numeric: tabular-nums; }
+.sl__body { padding-top: calc(40 * var(--u)); min-height: 0; }
+.sl__kicker {
+  display: block; font: 600 calc(15 * var(--u))/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--s-accent);
+}
+.sl__title {
+  margin: calc(16 * var(--u)) 0 0; max-width: calc(1250 * var(--u));
+  font: 500 calc(60 * var(--u))/1.04 var(--display); letter-spacing: -0.035em; text-wrap: balance;
+}
+.sl__lead {
+  margin: calc(20 * var(--u)) 0 0; max-width: calc(1260 * var(--u));
+  font: 400 calc(27 * var(--u))/1.45 "Literata", Georgia, serif; color: #3a352f;
+}
+
+/* картки */
+.sl-cards {
+  display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: calc(20 * var(--u));
+  margin-top: calc(36 * var(--u));
+}
+.sl-cards__card {
+  padding: calc(24 * var(--u)) calc(24 * var(--u)) calc(26 * var(--u)); border-radius: calc(14 * var(--u));
+  background: var(--s-paper); box-shadow: inset 0 calc(3 * var(--u)) 0 var(--s-accent), 0 calc(1 * var(--u)) 0 var(--s-line);
+}
+.sl-cards h3, .sl-steps h3 { margin: 0; font: 600 calc(27 * var(--u))/1.2 var(--display); letter-spacing: -0.015em; }
+.sl-cards p, .sl-steps p { margin: calc(10 * var(--u)) 0 0; font: 400 calc(22 * var(--u))/1.45 var(--sans); color: #3a352f; }
+
+/* кроки */
+.sl-steps {
+  position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: calc(28 * var(--u));
+  margin: calc(40 * var(--u)) 0 0; padding: 0; list-style: none;
+}
+.sl-steps::before {
+  content: ""; position: absolute; left: calc(22 * var(--u)); right: calc(22 * var(--u)); top: calc(22 * var(--u));
+  height: calc(2 * var(--u)); background: var(--s-line);
+}
+.sl-steps li { position: relative; }
+.sl-steps__dot {
+  position: relative; display: grid; place-items: center; width: calc(46 * var(--u)); height: calc(46 * var(--u)); margin-bottom: calc(20 * var(--u));
+  border-radius: 50%; background: var(--s-ink); color: var(--s-bg); font: 600 calc(19 * var(--u))/1 var(--sans);
+  box-shadow: 0 0 0 calc(8 * var(--u)) var(--s-bg);
+}
+.sl-steps li:last-child .sl-steps__dot { background: var(--s-accent); color: var(--s-ink); }
+
+/* порівняння */
+.sl-compare { display: grid; grid-template-columns: 1fr 1fr; margin-top: calc(40 * var(--u)); }
+.sl-compare__col { padding-right: calc(48 * var(--u)); }
+.sl-compare__col + .sl-compare__col { padding: 0 0 0 calc(48 * var(--u)); border-left: calc(2 * var(--u)) solid var(--s-line); }
+.sl-compare h3 {
+  margin: 0; font: 500 calc(42 * var(--u))/1.1 var(--display); letter-spacing: -0.03em;
+}
+.sl-compare h3::before {
+  content: ""; display: block; width: calc(40 * var(--u)); height: calc(3 * var(--u)); margin-bottom: calc(18 * var(--u)); background: var(--s-accent);
+}
+.sl-compare p { margin: calc(16 * var(--u)) 0 0; font: 400 calc(25 * var(--u))/1.5 var(--sans); color: #3a352f; }
+
+/* цитата й підвал */
+.sl__quote {
+  display: grid; grid-template-columns: 1fr auto; align-items: end; gap: calc(40 * var(--u));
+  margin: 0; padding: calc(22 * var(--u)) 0 calc(4 * var(--u)) calc(28 * var(--u)); border-left: calc(4 * var(--u)) solid var(--s-accent);
+}
+.sl__quote blockquote { margin: 0; font: italic 400 calc(23 * var(--u))/1.5 "Literata", Georgia, serif; color: var(--s-ink); }
+.sl__quote figcaption { max-width: calc(330 * var(--u)); font: 500 calc(16 * var(--u))/1.35 var(--sans); color: var(--s-muted); text-align: right; }
+.sl__foot {
+  margin-top: calc(22 * var(--u)); padding-top: calc(14 * var(--u)); border-top: calc(1 * var(--u)) solid var(--s-line);
+  font: 400 calc(13 * var(--u))/1.3 var(--sans); color: var(--s-muted);
+}
+
+/* обкладинка */
+.sl--cover { display: grid; grid-template-columns: 58% 42%; background: #1b1a18; color: #f4f1ec; }
+.sl-cover__text { display: flex; flex-direction: column; padding: calc(72 * var(--u)) calc(64 * var(--u)) calc(56 * var(--u)) calc(96 * var(--u)); }
+.sl-cover__title { margin: calc(26 * var(--u)) 0 0; font: 500 calc(68 * var(--u))/1.02 var(--display); letter-spacing: -0.04em; text-wrap: balance; }
+.sl-cover__plan { margin: auto 0 0; padding: 0; list-style: none; display: grid; gap: calc(12 * var(--u)); }
+.sl-cover__plan li { display: flex; gap: calc(18 * var(--u)); font: 400 calc(23 * var(--u))/1.35 var(--sans); color: rgba(244, 241, 236, 0.86); }
+.sl-cover__plan span { flex: none; width: calc(30 * var(--u)); color: var(--s-accent); font-variant-numeric: tabular-nums; }
+.sl-cover__foot {
+  margin-top: calc(44 * var(--u)); padding-top: calc(18 * var(--u)); border-top: calc(1 * var(--u)) solid rgba(244, 241, 236, 0.16);
+  font: 500 calc(14 * var(--u))/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244, 241, 236, 0.5);
+}
+.sl-cover__img { background-size: cover; filter: grayscale(0.25) contrast(1.05); }
+.sl-cover__img::after { content: none; }
+
+/* підсумок */
+.sl-terms { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(40 * var(--u)) calc(32 * var(--u)); margin: calc(48 * var(--u)) 0 0; }
+.sl-terms div { padding-top: calc(16 * var(--u)); border-top: calc(2 * var(--u)) solid var(--s-ink); }
+.sl-terms dt { font: 600 calc(29 * var(--u))/1.2 var(--display); letter-spacing: -0.015em; }
+.sl-terms dd { margin: calc(10 * var(--u)) 0 0; font: 400 calc(21 * var(--u))/1.45 var(--sans); color: #3a352f; }
+.sl-sources {
+  display: grid; grid-template-columns: calc(150 * var(--u)) 1fr; gap: calc(20 * var(--u));
+  padding: calc(18 * var(--u)) 0 0; border-top: calc(1 * var(--u)) solid var(--s-line);
+}
+.sl-sources > span { font: 600 calc(14 * var(--u))/1.4 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--s-accent); }
+.sl-sources ol { margin: 0; padding-left: calc(20 * var(--u)); display: grid; gap: calc(4 * var(--u)); font: 400 calc(15 * var(--u))/1.4 var(--sans); color: var(--s-muted); }
+.sl--summary { grid-template-rows: auto 1fr auto; }

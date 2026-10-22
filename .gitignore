@@ -1,0 +1,25 @@
+# залежності та збірка
+node_modules/
+dist/
+*.local
+
+# кеш Vite (зазвичай лежить у тимчасовій папці, але про всяк випадок)
+node_modules/.vite/
+.vite/
+
+# логи
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# середовище й деплой
+.env
+.env.*
+.vercel/
+
+# системні файли та редактори
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
